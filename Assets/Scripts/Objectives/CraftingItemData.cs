@@ -1,11 +1,10 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public enum ItemType
 {
     A,
     B,
-    C, 
+    C,
     D
 }
 

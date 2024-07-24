@@ -9,14 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9448c6b80e14d154bb27793825a62942, type: 3}
-  m_Name: Crafting Recipe
+  m_Script: {fileID: 11500000, guid: 0b9845dc4ab50ce4e92babff23ed1cb5, type: 3}
+  m_Name: Crafting Recipe Database
   m_EditorClassIdentifier: 
-  craftingItems:
-  - ItemData: {fileID: 0}
-    Amount: 1
-  - ItemData: {fileID: 0}
-    Amount: 1
-  product:
-    ItemData: {fileID: 0}
-    Amount: 1
+  craftingRecipes:
+  - {fileID: 11400000, guid: 01cc9c9f50e3d5e419c27034dd62aa4b, type: 2}
