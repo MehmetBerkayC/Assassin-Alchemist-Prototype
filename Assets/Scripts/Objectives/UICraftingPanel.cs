@@ -31,6 +31,20 @@ public class UICraftingPanel : MonoBehaviour
         }
     }
 
+    /// CRAFTING PANEL WORKFLOW
+    /// Get inventory info                                                  *-
+    /// Generate buttons that have specified item information contained     *-
+    ///     - Make sure buttons are automatically generateable              *-
+    ///     - Make sure the click function works                            --
+    ///     - Make sure the parent is right                                 *-
+    /// Keep all generated buttons in a list
+    /// Display generated item slots (^ buttons)
+    /// -- Add Working Tooltip --
+    /// - Make sure crafting slots display and update properly
+    /// Crafting button calls crafting system
+    /// Respond is calculated
+    /// ***
+
     public void Update_InventoryDisplay()
     {
         playerInventory = PlayerInventory.Instance.GetInventoryItems();
