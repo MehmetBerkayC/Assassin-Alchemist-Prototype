@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Crafting Recipe
   m_EditorClassIdentifier: 
   craftingItems:
-  - ItemData: {fileID: 0}
+  - ItemData: {fileID: 11400000, guid: 68c130bd09745b648bd4fb5b93ee6fd4, type: 2}
     Amount: 1
-  - ItemData: {fileID: 0}
+  - ItemData: {fileID: 11400000, guid: 75855f7553dacbc4e991874933bde3cb, type: 2}
     Amount: 1
   product:
-    ItemData: {fileID: 0}
+    ItemData: {fileID: 11400000, guid: a9111d611961b7448a0ed97fb39a3349, type: 2}
     Amount: 1
