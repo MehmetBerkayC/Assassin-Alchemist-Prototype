@@ -6949,6 +6949,7 @@ GameObject:
   - component: {fileID: 1192998623}
   - component: {fileID: 1192998625}
   - component: {fileID: 1192998624}
+  - component: {fileID: 1192998626}
   m_Layer: 5
   m_Name: Crafting Panel
   m_TagString: Untagged
@@ -7016,6 +7017,24 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1192998622}
   m_CullTransparentMesh: 1
+--- !u!114 &1192998626
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1192998622}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ae4363a473a3a44cacd535a253b9f19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectableItemPrefab: {fileID: 1587303294}
+  InventoryGrid: {fileID: 0}
+  inventoryItemSlots_Button: []
+  craftingPanel: {fileID: 0}
+  craftingInputItemSlots: []
+  craftingOutputItemSlot: {fileID: 0}
 --- !u!1 &1303468245
 GameObject:
   m_ObjectHideFlags: 0
@@ -8984,7 +9003,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1587303297}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1192998622}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1587303297
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9035,8 +9066,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3544a7d0d74421a4685b64da17e8d663, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemNameText: {fileID: 0}
-  itemAmountText: {fileID: 0}
+  itemNameText: {fileID: 396230168}
+  itemAmountText: {fileID: 911968860}
   CraftingItem:
     ItemData: {fileID: 0}
     Amount: 1
