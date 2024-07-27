@@ -11,11 +11,11 @@ public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if(TryGetComponent(out CraftingItemContainer craftingItem))
+        if(TryGetComponent(out UIInventoryItemSlot itemSlot))
         {
-            itemNameText.text = craftingItem.ItemData.ItemName;
-            itemDescriptionText.text = craftingItem.ItemData.ItemDescription;
-            itemStatsText.text = craftingItem.ItemData.ItemStats.ToString();
+            itemNameText.text = itemSlot.InventoryItem.ItemData.ItemName;
+            itemDescriptionText.text = itemSlot.InventoryItem.ItemData.ItemDescription;
+            itemStatsText.text = itemSlot.InventoryItem.ItemData.ItemStats.ToString();
         }
     }
 

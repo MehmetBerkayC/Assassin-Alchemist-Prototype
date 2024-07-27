@@ -39,7 +39,7 @@ public class PlayerInventory : MonoBehaviour
         craftingInventory.Clear();
         Debug.Log("Adding random items to player inventory for TESTING!");
 
-        int generatedItemAmount = Random.Range(5, inventoryCapacity);
+        int generatedItemAmount = Random.Range(3, inventoryCapacity/2);
         for (int i = 0; i < generatedItemAmount; i++) {
             CraftingItemContainer newItem = new CraftingItemContainer();
             newItem.ItemData = itemDatabase.GenerateItem();
@@ -87,11 +87,12 @@ public class PlayerInventory : MonoBehaviour
             int remainder = newItemAmount % maxStackSize; // Remainder after stacking
             craftingItem.Amount = maxStackSize; // old item has max stack size
 
-            // make a new item
-            CraftingItemContainer newItemContainer = new CraftingItemContainer();
-            newItemContainer.ItemData = item.ItemData;
-            newItemContainer.Amount = remainder;
-            craftingInventory.Add(newItemContainer);
+            // ** Forget remainder for now **
+            //// make a new item
+            //CraftingItemContainer newItemContainer = new CraftingItemContainer();
+            //newItemContainer.ItemData = item.ItemData;
+            //newItemContainer.Amount = remainder;
+            //AddItemToInventory(newItemContainer); // recursive!
             return true;
         }
         return false;
