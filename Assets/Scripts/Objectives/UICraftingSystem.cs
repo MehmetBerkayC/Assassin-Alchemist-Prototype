@@ -1,15 +1,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UICraftingPanel : MonoBehaviour
+public class UICraftingSystem : MonoBehaviour
 {
-    public static UICraftingPanel Instance;
+    public static UICraftingSystem Instance;
 
-    [Header("Selectable Item Grid (Inventory)")]
-    [SerializeField] GameObject selectableItemPrefab;
+    [Header("Inventory Item Grid")]
+    [SerializeField] GameObject inventoryItemSlotPrefab;
 
-    [Header("Generated Item Buttons")]
-    [SerializeField] GameObject InventoryGrid;
+    [Header("Generated Inventory Item Buttons")]
+    [SerializeField] GameObject inventoryGrid;
     [SerializeField] List<GameObject> inventoryItemSlots_Button;
     
     [Header("Crafting Area")]
@@ -56,27 +56,33 @@ public class UICraftingPanel : MonoBehaviour
             if (item != null)
             {
                 // Make new item slot(button) in UI and assign the item information
-                UICraftingItemSlot itemSlotUI = Instantiate(selectableItemPrefab, InventoryGrid.transform).GetComponent<UICraftingItemSlot>();
+                UIInventoryItemSlot itemSlotUI = Instantiate(inventoryItemSlotPrefab, inventoryGrid.transform).GetComponent<UIInventoryItemSlot>();
                 itemSlotUI.Insert_ToItemSlot(item);
                 inventoryItemSlots_Button.Add(itemSlotUI.gameObject);
             }
         }
     }
 
-    public void Add_SelectedItemToCraft(UICraftingItemSlot craftingItemSlot)
+    public void Add_SelectedItemToCraft(CraftingItemContainer inventoryItem)
     {
         foreach (UICraftingItemSlot itemSlot in craftingInputItemSlots)
         {
             if(itemSlot.CraftingItem == null)
             {
                 // Set item on UI
-                itemSlot.Insert_ToItemSlot(craftingItemSlot.CraftingItem);
+                itemSlot.Insert_ToItemSlot(inventoryItem);
                 // Remove from inventory
-                PlayerInventory.Instance.RemoveItemFromInventory(craftingItemSlot.CraftingItem);
+                PlayerInventory.Instance.RemoveItemFromInventory(inventoryItem);
+                Update_InventoryDisplay();
                 return;
             }
         }
         Debug.Log("All item slots are full!");
+    }
+
+    public void Remove_SelectedItemFromCraft(CraftingItemContainer craftingItem)
+    {
+        PlayerInventory.Instance.AddItemToInventory(craftingItem);
     }
 
     public void TaggleCraftingPanelVisibility()

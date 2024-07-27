@@ -3,30 +3,32 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class UICraftingItemSlot : MonoBehaviour
+public class UIInventoryItemSlot : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI itemNameText; 
+    [SerializeField] TextMeshProUGUI itemNameText;
     [SerializeField] TextMeshProUGUI itemAmountText;
 
-    public CraftingItemContainer CraftingItem;
-    
+    public CraftingItemContainer InventoryItem;
+
     // One func to send item from Selectable(PlayerInventory in UI) TO Selected(Crafting Slots)
-    public void Remove_FromCraftingItemSlot()
+    public void Remove_FromInventoryItemSlot()
     {
-        if(CraftingItem != null)
+        if (InventoryItem != null)
         {
-            UICraftingSystem.Instance.Remove_SelectedItemFromCraft(CraftingItem);
-            CraftingItem = null;
+            UICraftingSystem.Instance.Add_SelectedItemToCraft(InventoryItem); // Removes item from inventory automatically
+            InventoryItem = null;
         }
     }
 
     // One func to send item from Selected(Crafting Slots) TO Selectable(PlayerInventory in UI)
     public bool Insert_ToItemSlot(CraftingItemContainer craftingItem)
     {
-        if(CraftingItem == null) { 
+        if (InventoryItem == null)
+        {
             SetItem(craftingItem);
             return true;
-        }else
+        }
+        else
         {
             return false;
         }
@@ -34,13 +36,13 @@ public class UICraftingItemSlot : MonoBehaviour
 
     public void SetItem(CraftingItemContainer craftingItem)
     {
-        CraftingItem = craftingItem;
+        InventoryItem = craftingItem;
         Update_ItemSlotInformation();
     }
 
     public void Update_ItemSlotInformation()
     {
-        itemNameText.text = CraftingItem.ItemData.ItemName;
-        itemAmountText.text = CraftingItem.Amount.ToString();
+        itemNameText.text = InventoryItem.ItemData.ItemName;
+        itemAmountText.text = InventoryItem.Amount.ToString();
     }
 }
