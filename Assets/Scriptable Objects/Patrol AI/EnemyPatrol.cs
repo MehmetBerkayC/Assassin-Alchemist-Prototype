@@ -1,16 +1,48 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyPatrol : MonoBehaviour
 {
-    public Transform[] patrolPoints;
+    [SerializeField] Transform[] patrolPoints;
+    [SerializeField] float speed;
+    [SerializeField] float rotationSpeed = 360f; // koselere gelince sadece acik odaya nasil baktiririm bilmiyorum oyuzden 360
+    [SerializeField] float waitTime; // etrafi kolacan etme suresi
+
     private int currentPointIndex = 0;
-    public float speed;
+    private bool isWaiting = false;
+
+    private enum State
+    {
+        Patrolling,
+        Waiting
+    }
+
+    private State currentState;
+
+    void Start()
+    {
+        if (patrolPoints.Length > 0)
+        {
+            currentState = State.Patrolling;
+        }
+    }
 
     void Update()
     {
-        if (patrolPoints.Length == 0)
+        switch (currentState)
+        {
+            case State.Patrolling:
+                Patrol();
+                break;
+            case State.Waiting:
+                // yeni state gecisi
+                break;
+        }
+    }
+
+    private void Patrol()
+    {
+        if (patrolPoints.Length == 0 || isWaiting)
             return;
 
         Transform targetPoint = patrolPoints[currentPointIndex];
@@ -24,8 +56,25 @@ public class EnemyPatrol : MonoBehaviour
 
         if (Vector2.Distance(transform.position, targetPoint.position) < 0.5f)
         {
-            currentPointIndex = (currentPointIndex + 1) % patrolPoints.Length;
+            currentState = State.Waiting;
+            StartCoroutine(WaitAndRotate());
         }
     }
-}
 
+    private IEnumerator WaitAndRotate()
+    {
+        isWaiting = true;
+
+        float elapsedTime = 0f;
+        while (elapsedTime < waitTime)
+        {
+            transform.Rotate(Vector3.forward, rotationSpeed * Time.deltaTime);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        currentPointIndex = (currentPointIndex + 1) % patrolPoints.Length;
+        isWaiting = false;
+        currentState = State.Patrolling;
+    }
+}
