@@ -4,36 +4,28 @@ using UnityEngine;
 
 public class EnemyPatrol : MonoBehaviour
 {
-    public GameObject _PointA, _PointB;
-    private Rigidbody2D _rb;
-    private Transform _currentPoint;
-    public float _speed;
-    void Start()
-    {
-        _rb = GetComponent<Rigidbody2D>();
-        _currentPoint = _PointB.transform;
-
-    }
+    public Transform[] patrolPoints;
+    private int currentPointIndex = 0;
+    public float speed;
 
     void Update()
     {
-        Vector2 point = _currentPoint.position - transform.position;
-        if(_currentPoint == _PointB.transform)
+        if (patrolPoints.Length == 0)
+            return;
+
+        Transform targetPoint = patrolPoints[currentPointIndex];
+        Vector2 direction = targetPoint.position - transform.position;
+        transform.position = Vector2.MoveTowards(transform.position, targetPoint.position, speed * Time.deltaTime);
+
+        if (direction != Vector2.zero)
         {
-            _rb.velocity = new Vector2(_speed, 0);
-        }
-        else
-        {
-            _rb.velocity = new Vector2(-_speed, 0);
+            transform.right = direction;
         }
 
-        if (Vector2.Distance(transform.position,_currentPoint.position) < 0.5f && _currentPoint == _PointB.transform)
+        if (Vector2.Distance(transform.position, targetPoint.position) < 0.5f)
         {
-            _currentPoint = _PointA.transform;
-        }
-        if(Vector2.Distance(transform.position, _currentPoint.position) < 0.5f && _currentPoint == _PointA.transform)
-        {
-            _currentPoint = _PointB.transform;
+            currentPointIndex = (currentPointIndex + 1) % patrolPoints.Length;
         }
     }
 }
+
