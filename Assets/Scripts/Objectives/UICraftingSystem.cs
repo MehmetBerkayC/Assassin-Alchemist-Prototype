@@ -48,12 +48,12 @@ public class UICraftingSystem : MonoBehaviour
     public void Update_InventoryDisplay()
     {
         playerInventory = PlayerInventory.Instance.GetInventoryItems();
-        
-        inventoryItemSlots_Button.Clear(); // find a better way to sort-display inventory
+
+        ClearInventoryButtons();
 
         foreach (CraftingItemContainer item in playerInventory)
         {
-            if (item != null)
+            if (item.ItemData != null)
             {
                 // Make new item slot(button) in UI and assign the item information
                 UIInventoryItemSlot itemSlotUI = Instantiate(inventoryItemSlotPrefab, inventoryGrid.transform).GetComponent<UIInventoryItemSlot>();
@@ -63,11 +63,23 @@ public class UICraftingSystem : MonoBehaviour
         }
     }
 
+    private void ClearInventoryButtons()
+    {
+        for (int i = 0; i < inventoryItemSlots_Button.Count; i++)
+        {
+            {
+                Destroy(inventoryItemSlots_Button[i].gameObject);
+            }
+        }
+
+        inventoryItemSlots_Button.Clear(); 
+    }
+
     public void Add_SelectedItemToCraft(CraftingItemContainer inventoryItem)
     {
         foreach (UICraftingItemSlot itemSlot in craftingInputItemSlots)
         {
-            if(itemSlot.CraftingItem == null)
+            if(itemSlot.CraftingItem == null || itemSlot.CraftingItem.ItemData == null) // Make it only return 1 item as amount*
             {
                 // Set item on UI
                 itemSlot.Insert_ToItemSlot(inventoryItem);
@@ -83,6 +95,7 @@ public class UICraftingSystem : MonoBehaviour
     public void Remove_SelectedItemFromCraft(CraftingItemContainer craftingItem)
     {
         PlayerInventory.Instance.AddItemToInventory(craftingItem);
+        Update_InventoryDisplay();
     }
 
     public void TaggleCraftingPanelVisibility()

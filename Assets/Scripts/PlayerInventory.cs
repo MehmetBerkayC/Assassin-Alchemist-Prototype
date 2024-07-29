@@ -58,7 +58,7 @@ public class PlayerInventory : MonoBehaviour
             {
                 if (IsItemMatchingAndStackable(item, craftingItem))
                 {
-                    break; // Match occured and inventory updated
+                    return; // Match occured and inventory updated
                 }
             }
             // No match, Add as a new item
