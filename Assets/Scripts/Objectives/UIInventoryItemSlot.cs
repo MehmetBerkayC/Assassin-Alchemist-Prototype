@@ -8,7 +8,7 @@ public class UIInventoryItemSlot : MonoBehaviour
     [SerializeField] TextMeshProUGUI itemNameText;
     [SerializeField] TextMeshProUGUI itemAmountText;
 
-    public CraftingItemContainer InventoryItem = null;
+    public ItemContainer InventoryItem = null;
 
     // One func to send item from Selectable(PlayerInventory in UI) TO Selected(Crafting Slots)
     public void Remove_FromInventoryItemSlot()
@@ -20,7 +20,7 @@ public class UIInventoryItemSlot : MonoBehaviour
     }
 
     // One func to send item from Selected(Crafting Slots) TO Selectable(PlayerInventory in UI)
-    public bool Insert_ToItemSlot(CraftingItemContainer craftingItem)
+    public bool Insert_ToItemSlot(ItemContainer craftingItem)
     {
         if (InventoryItem.ItemData == null)
         {
@@ -30,7 +30,7 @@ public class UIInventoryItemSlot : MonoBehaviour
         return false;
     }
 
-    private void Update_ItemData(CraftingItemContainer item, bool insertOperation)
+    private void Update_ItemData(ItemContainer item, bool insertOperation)
     {
         if (insertOperation)
         {
@@ -39,9 +39,20 @@ public class UIInventoryItemSlot : MonoBehaviour
         }
         else
         {
-            UICraftingSystem.Instance.Add_SelectedItemToCraft(item);
-            InventoryItem.ItemData = null;
-            InventoryItem.Amount = 0;
+            ItemContainer newItem = new ItemContainer(item.ItemData, 1); // Send only 1 item
+
+            // Check removal success
+            if (UICraftingSystem.Instance.Add_SelectedItemToCraft(newItem)) {
+                if(item.Amount == 1)
+                {
+                    InventoryItem.ItemData = null;
+                    InventoryItem.Amount = 0;
+                }
+                else
+                {
+                    InventoryItem.Amount -= 1;
+                }
+            }
         }
         Update_ItemSlotInformation();
     }
@@ -50,7 +61,7 @@ public class UIInventoryItemSlot : MonoBehaviour
     {
         if (InventoryItem.ItemData != null)
         {
-            itemNameText.text = InventoryItem.ItemData.ItemName;
+            itemNameText.text = InventoryItem.ItemData.name;
             itemAmountText.text = InventoryItem.Amount.ToString();
         }
         else

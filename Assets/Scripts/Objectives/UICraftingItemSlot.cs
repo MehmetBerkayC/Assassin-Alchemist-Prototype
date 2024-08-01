@@ -8,9 +8,9 @@ public class UICraftingItemSlot : MonoBehaviour
     [SerializeField] TextMeshProUGUI itemNameText; 
     [SerializeField] TextMeshProUGUI itemAmountText;
 
-    public CraftingItemContainer CraftingItem = new();
+    public ItemContainer CraftingItem = new();
     
-    // One func to send item from Selectable(PlayerInventory in UI) TO Selected(Crafting Slots)
+    // One func to send item from (PlayerInventory in UI) TO (Crafting Slots)
     public void Remove_FromCraftingItemSlot()
     {
         if(CraftingItem.ItemData != null)
@@ -19,8 +19,8 @@ public class UICraftingItemSlot : MonoBehaviour
         }
     }
 
-    // One func to send item from Selected(Crafting Slots) TO Selectable(PlayerInventory in UI)
-    public bool Insert_ToItemSlot(CraftingItemContainer craftingItem)
+    // One func to send item from (Crafting Slots) TO (PlayerInventory in UI)
+    public bool Insert_ToItemSlot(ItemContainer craftingItem)
     {
         if(CraftingItem.ItemData == null && craftingItem.ItemData != null) {
             Update_ItemData(craftingItem, insertOperation: true);
@@ -29,7 +29,7 @@ public class UICraftingItemSlot : MonoBehaviour
         return false;
     }
 
-    private void Update_ItemData(CraftingItemContainer item, bool insertOperation)
+    private void Update_ItemData(ItemContainer item, bool insertOperation)
     {
         if(insertOperation)
         {
@@ -38,9 +38,9 @@ public class UICraftingItemSlot : MonoBehaviour
         }
         else
         {
-            UICraftingSystem.Instance.Remove_SelectedItemFromCraft(item);
             CraftingItem.ItemData = null;
             CraftingItem.Amount = 0;
+            UICraftingSystem.Instance.Remove_SelectedItemFromCraft(item);
         }
         Update_ItemSlotInformation();
     }
@@ -49,7 +49,7 @@ public class UICraftingItemSlot : MonoBehaviour
     {
         if (CraftingItem.ItemData != null)
         {
-            itemNameText.text = CraftingItem.ItemData.ItemName;
+            itemNameText.text = CraftingItem.ItemData.name;
             itemAmountText.text = CraftingItem.Amount.ToString();
         }
         else

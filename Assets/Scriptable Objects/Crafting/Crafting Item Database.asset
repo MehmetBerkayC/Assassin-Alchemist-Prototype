@@ -9,10 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb3c8f292309cde44bebf3641aaeb847, type: 3}
+  m_Script: {fileID: 11500000, guid: d39f422491150754d989b5dcf2cb557c, type: 3}
   m_Name: Crafting Item Database
   m_EditorClassIdentifier: 
-  CraftingItems:
+  Items:
   - {fileID: 11400000, guid: 75855f7553dacbc4e991874933bde3cb, type: 2}
   - {fileID: 11400000, guid: a9111d611961b7448a0ed97fb39a3349, type: 2}
+  - {fileID: 11400000, guid: ffd79bf7136edc14d97c4cd420346e46, type: 2}
   - {fileID: 11400000, guid: 68c130bd09745b648bd4fb5b93ee6fd4, type: 2}

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class CraftingSystem : MonoBehaviour // no need to make it a monobehaviour, send the database via function
 {
-    public bool Craft(CraftingItemContainer[] craftingIngredients, CraftingRecipeDatabase recipeDatabase)
+    public bool Craft(ItemContainer[] craftingIngredients, CraftingRecipeDatabase recipeDatabase)
     {
         // Ingredients *MUST BE IN ORDER*, otherwise array equalization will display error
         foreach(CraftingRecipe recipe in recipeDatabase.craftingRecipes)

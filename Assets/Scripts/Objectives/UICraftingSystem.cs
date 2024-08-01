@@ -17,18 +17,11 @@ public class UICraftingSystem : MonoBehaviour
     [SerializeField] UICraftingItemSlot[] craftingInputItemSlots;
     [SerializeField] UICraftingItemSlot craftingOutputItemSlot;
 
-    private List<CraftingItemContainer> playerInventory;
+    private List<ItemContainer> playerInventory;
 
     private void Awake()
     {
-        if(Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {   // Still don't know to destroy either gameobj or component
-            Destroy(gameObject);
-        }
+        Instance = this;
     }
 
     /// CRAFTING PANEL WORKFLOW
@@ -47,11 +40,11 @@ public class UICraftingSystem : MonoBehaviour
 
     public void Update_InventoryDisplay()
     {
-        playerInventory = PlayerInventory.Instance.GetInventoryItems();
+        playerInventory = Inventory.Instance.GetInventoryItems();
 
         ClearInventoryButtons();
 
-        foreach (CraftingItemContainer item in playerInventory)
+        foreach (ItemContainer item in playerInventory)
         {
             if (item.ItemData != null)
             {
@@ -75,26 +68,28 @@ public class UICraftingSystem : MonoBehaviour
         inventoryItemSlots_Button.Clear(); 
     }
 
-    public void Add_SelectedItemToCraft(CraftingItemContainer inventoryItem)
+    public bool Add_SelectedItemToCraft(ItemContainer inventoryItem) // Make the parameter only return 1 item as amount*
     {
         foreach (UICraftingItemSlot itemSlot in craftingInputItemSlots)
         {
-            if(itemSlot.CraftingItem == null || itemSlot.CraftingItem.ItemData == null) // Make it only return 1 item as amount*
+            if(itemSlot.CraftingItem.ItemData == null)
             {
                 // Set item on UI
                 itemSlot.Insert_ToItemSlot(inventoryItem);
                 // Remove from inventory
-                PlayerInventory.Instance.RemoveItemFromInventory(inventoryItem);
+                Inventory.Instance.Remove_ItemFromInventory(inventoryItem);
                 Update_InventoryDisplay();
-                return;
+                return true;
             }
         }
         Debug.Log("All item slots are full!");
+        return false;
     }
 
-    public void Remove_SelectedItemFromCraft(CraftingItemContainer craftingItem)
+    // Check inventory capacity later
+    public void Remove_SelectedItemFromCraft(ItemContainer craftingItem)
     {
-        PlayerInventory.Instance.AddItemToInventory(craftingItem);
+        Inventory.Instance.Add_ItemToInventory(craftingItem);
         Update_InventoryDisplay();
     }
 

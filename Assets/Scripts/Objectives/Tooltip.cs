@@ -11,11 +11,14 @@ public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if(TryGetComponent(out UIInventoryItemSlot itemSlot))
+        if(eventData.button == PointerEventData.InputButton.Left) // Left Click
         {
-            itemNameText.text = itemSlot.InventoryItem.ItemData.ItemName;
-            itemDescriptionText.text = itemSlot.InventoryItem.ItemData.ItemDescription;
-            itemStatsText.text = itemSlot.InventoryItem.ItemData.ItemStats.ToString();
+            if(TryGetComponent(out UIInventoryItemSlot itemSlot))
+            {
+                itemNameText.text = itemSlot.InventoryItem.ItemData.name;
+                itemDescriptionText.text = itemSlot.InventoryItem.ItemData.ItemDescription;
+                itemStatsText.text = itemSlot.InventoryItem.ItemData.Item_Type.ToString();
+            }
         }
     }
 

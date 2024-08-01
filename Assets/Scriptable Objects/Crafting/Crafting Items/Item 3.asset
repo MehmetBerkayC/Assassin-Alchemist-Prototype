@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0609042525f121146925f23bdf903433, type: 3}
-  m_Name: Crafting Item 2
+  m_Name: Item 3
   m_EditorClassIdentifier: 
-  ItemName: Poison Ingredient C
-  ItemDescription: A Poison
-  ItemStats: 2
+  ItemName: Poison Ingredient D
+  ItemDescription: Deadly Poison
+  ItemStats: 3
   ItemPrefab: {fileID: 0}
   ItemSprite: {fileID: 0}
