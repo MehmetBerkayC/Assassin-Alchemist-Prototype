@@ -1,20 +1,20 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 
 public class EnemyPatrol : MonoBehaviour
 {
     public Transform[] patrolPoints;
     public float speed;
-    public float rotationSpeed = 360f; // node donence hizi
-    public float waitTime = 2f; // node larda bekleme suresi
-    public float detectionTime = 3f; 
-    public PolygonCollider2D detectionCollider; // detect area
-    public GameObject player; 
+    public float rotationSpeed = 360f; // Derece/saniye
+    public float detectionTime = 3f;   // Oyuncuyu tespit etmek için gereken süre
+    public PolygonCollider2D detectionCollider; // Tespit alanı için kullanılan collider
+    public GameObject player; // Oyuncu karakteri
 
     private int currentPointIndex = 0;
     private bool isWaiting = false;
     private bool isPlayerDetected = false;
     private float detectionCounter = 0f;
+    private PatrolNode currentNode;
 
     private enum State
     {
@@ -41,7 +41,7 @@ public class EnemyPatrol : MonoBehaviour
                 Patrol();
                 break;
             case State.Waiting:
-                // Waiting burda suan birsey yok ama karakterin belli aciyla bakmasini saglamak icin bakicam birseyler
+                // Coroutine tarafından yönetilir, burada bir şey yapmaya gerek yok
                 break;
             case State.Detecting:
                 DetectPlayer();
@@ -65,27 +65,73 @@ public class EnemyPatrol : MonoBehaviour
 
         if (Vector2.Distance(transform.position, targetPoint.position) < 0.5f)
         {
-            currentState = State.Waiting;
-            StartCoroutine(WaitAndRotate());
+            // Node'a ulaşıldığında bekleme durumuna geç
+            PatrolNode node = targetPoint.GetComponent<PatrolNode>();
+            if (node != null)
+            {
+                currentNode = node;
+                currentState = State.Waiting;
+                StartCoroutine(WaitAndLookAtAngles(node));
+            }
         }
     }
 
-    private IEnumerator WaitAndRotate()
+    private IEnumerator WaitAndLookAtAngles(PatrolNode node)
     {
         isWaiting = true;
 
-        float elapsedTime = 0f;
-        while (elapsedTime < waitTime)
+        if (node.rotate360)
         {
-            transform.Rotate(Vector3.forward, rotationSpeed * Time.deltaTime);
-            elapsedTime += Time.deltaTime;
-            yield return null;
+            // Eğer 360 derece dönecekse
+            float elapsedTime = 0f;
+            while (elapsedTime < node.waitTime)
+            {
+                transform.Rotate(Vector3.forward, rotationSpeed * Time.deltaTime);
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+        }
+        else
+        {
+            // Eğer belirli bir açı aralığında dönecekse
+            float elapsedTime = 0f;
+            float normalizedMinAngle = NormalizeAngle(node.minAngle);
+            float normalizedMaxAngle = NormalizeAngle(node.maxAngle);
+            bool isLookingRight = node.prioritizeClockwise;
+
+            while (elapsedTime < node.waitTime)
+            {
+                float targetAngle = isLookingRight ? normalizedMaxAngle : normalizedMinAngle;
+                Quaternion targetRotation = Quaternion.Euler(new Vector3(0, 0, targetAngle));
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+
+                if (Quaternion.Angle(transform.rotation, targetRotation) < 0.1f)
+                {
+                    // Yönü değiştir
+                    isLookingRight = !isLookingRight;
+                }
+
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
         }
 
+        // Bekleme süresi dolduğunda devriyeye devam et
         currentPointIndex = (currentPointIndex + 1) % patrolPoints.Length;
         isWaiting = false;
         currentState = State.Patrolling;
     }
+
+
+    private float NormalizeAngle(float angle)
+    {
+        // Açıyı 0-360 derece aralığına getir
+        angle = angle % 360;
+        if (angle < 0)
+            angle += 360;
+        return angle;
+    }
+
 
     private void DetectPlayer()
     {
@@ -93,14 +139,15 @@ public class EnemyPatrol : MonoBehaviour
         {
             detectionCounter += Time.deltaTime;
 
-            // Stop moving and face the player
+            // Hareketi durdur ve oyuncuya bak
             Vector2 direction = (player.transform.position - transform.position).normalized;
             transform.right = direction;
 
             if (detectionCounter >= detectionTime)
             {
+                // Oyuncu tespit edildi, oyun sonu mantığını burada uygula
                 Debug.Log("Player detected! Game Over.");
-
+                // Örnek: SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             }
         }
     }
@@ -132,4 +179,6 @@ public class EnemyPatrol : MonoBehaviour
             currentState = State.Patrolling;
         }
     }
+
+
 }
