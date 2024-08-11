@@ -17,7 +17,7 @@ public class UICraftingSystem : MonoBehaviour
     [SerializeField] UICraftingItemSlot[] craftingInputItemSlots;
     [SerializeField] UICraftingItemSlot craftingOutputItemSlot;
 
-    private List<ItemContainer> playerInventory;
+    private List<Item> playerInventory;
 
     private void Awake()
     {
@@ -44,7 +44,7 @@ public class UICraftingSystem : MonoBehaviour
 
         ClearInventoryButtons();
 
-        foreach (ItemContainer item in playerInventory)
+        foreach (Item item in playerInventory)
         {
             if (item.ItemData != null)
             {
@@ -68,7 +68,7 @@ public class UICraftingSystem : MonoBehaviour
         inventoryItemSlots_Button.Clear(); 
     }
 
-    public bool Add_SelectedItemToCraft(ItemContainer inventoryItem) // Make the parameter only return 1 item as amount*
+    public bool Add_SelectedItemToCraft(Item inventoryItem) // Make the parameter only return 1 item as amount*
     {
         foreach (UICraftingItemSlot itemSlot in craftingInputItemSlots)
         {
@@ -87,7 +87,7 @@ public class UICraftingSystem : MonoBehaviour
     }
 
     // Check inventory capacity later
-    public void Remove_SelectedItemFromCraft(ItemContainer craftingItem)
+    public void Remove_SelectedItemFromCraft(Item craftingItem)
     {
         Inventory.Instance.Add_ItemToInventory(craftingItem);
         Update_InventoryDisplay();

@@ -13,7 +13,7 @@ public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         if(eventData.button == PointerEventData.InputButton.Left) // Left Click
         {
-            if(TryGetComponent(out UIInventoryItemSlot itemSlot))
+            if(eventData.pointerEnter.TryGetComponent(out UIInventoryItemSlot itemSlot))
             {
                 itemNameText.text = itemSlot.InventoryItem.ItemData.name;
                 itemDescriptionText.text = itemSlot.InventoryItem.ItemData.ItemDescription;

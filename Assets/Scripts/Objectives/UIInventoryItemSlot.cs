@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class UIInventoryItemSlot : MonoBehaviour
+public class UIInventoryItemSlot : MonoBehaviour, IUIItemSlot
 {
     [SerializeField] TextMeshProUGUI itemNameText;
     [SerializeField] TextMeshProUGUI itemAmountText;
 
-    public ItemContainer InventoryItem = null;
+    public Item InventoryItem = null;
 
-    // One func to send item from Selectable(PlayerInventory in UI) TO Selected(Crafting Slots)
-    public void Remove_FromInventoryItemSlot()
+    // send item from PlayerInventory TO Crafting Slots
+    public void Remove_FromItemSlot()
     {
         if (InventoryItem.ItemData != null)
         {
@@ -19,8 +19,8 @@ public class UIInventoryItemSlot : MonoBehaviour
         }
     }
 
-    // One func to send item from Selected(Crafting Slots) TO Selectable(PlayerInventory in UI)
-    public bool Insert_ToItemSlot(ItemContainer craftingItem)
+    // send item from Crafting Slots TO PlayerInventory
+    public bool Insert_ToItemSlot(Item craftingItem)
     {
         if (InventoryItem.ItemData == null)
         {
@@ -30,16 +30,16 @@ public class UIInventoryItemSlot : MonoBehaviour
         return false;
     }
 
-    private void Update_ItemData(ItemContainer item, bool insertOperation)
+    private void Update_ItemData(Item item, bool insertOperation)
     {
         if (insertOperation)
         {
             InventoryItem.ItemData = item.ItemData;
-            InventoryItem.Amount = item.Amount;
+            InventoryItem.Amount += item.Amount;
         }
         else
         {
-            ItemContainer newItem = new ItemContainer(item.ItemData, 1); // Send only 1 item
+            Item newItem = new Item(item.ItemData, 1); // Send only 1 item
 
             // Check removal success
             if (UICraftingSystem.Instance.Add_SelectedItemToCraft(newItem)) {

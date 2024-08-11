@@ -2,10 +2,9 @@ using UnityEngine;
 
 public enum ItemType
 {
-    A,
-    B,
-    C,
-    D
+    Buff,
+    Debuff,
+    None
 }
 
 [CreateAssetMenu(menuName ="Scriptable Objects/Crafting/Crafting Items", fileName ="Crafting Item Data")]

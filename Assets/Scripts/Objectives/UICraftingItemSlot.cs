@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class UICraftingItemSlot : MonoBehaviour
+public class UICraftingItemSlot : MonoBehaviour, IUIItemSlot
 {
     [SerializeField] TextMeshProUGUI itemNameText; 
     [SerializeField] TextMeshProUGUI itemAmountText;
 
-    public ItemContainer CraftingItem = new();
-    
-    // One func to send item from (PlayerInventory in UI) TO (Crafting Slots)
-    public void Remove_FromCraftingItemSlot()
+    public Item CraftingItem = new();
+
+    // send item from PlayerInventory TO Crafting Slots
+    public void Remove_FromItemSlot()
     {
         if(CraftingItem.ItemData != null)
         {
@@ -19,8 +19,8 @@ public class UICraftingItemSlot : MonoBehaviour
         }
     }
 
-    // One func to send item from (Crafting Slots) TO (PlayerInventory in UI)
-    public bool Insert_ToItemSlot(ItemContainer craftingItem)
+    // send item from Crafting Slots TO PlayerInventory
+    public bool Insert_ToItemSlot(Item craftingItem)
     {
         if(CraftingItem.ItemData == null && craftingItem.ItemData != null) {
             Update_ItemData(craftingItem, insertOperation: true);
@@ -29,12 +29,12 @@ public class UICraftingItemSlot : MonoBehaviour
         return false;
     }
 
-    private void Update_ItemData(ItemContainer item, bool insertOperation)
+    private void Update_ItemData(Item item, bool insertOperation)
     {
         if(insertOperation)
         {
             CraftingItem.ItemData = item.ItemData;
-            CraftingItem.Amount = item.Amount;
+            CraftingItem.Amount += item.Amount;
         }
         else
         {

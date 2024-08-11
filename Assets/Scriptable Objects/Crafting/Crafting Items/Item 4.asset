@@ -12,8 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0609042525f121146925f23bdf903433, type: 3}
   m_Name: Item 4
   m_EditorClassIdentifier: 
-  ItemName: Poison Ingredient C
   ItemDescription: A Poison
-  ItemStats: 2
+  Item_Type: 1
   ItemPrefab: {fileID: 0}
   ItemSprite: {fileID: 0}

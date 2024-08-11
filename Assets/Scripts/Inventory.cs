@@ -7,7 +7,7 @@ public class Inventory : MonoBehaviour
     public static Inventory Instance;
 
     [Header("Inventory Settings")]
-    [SerializeField] private List<ItemContainer> inventory;
+    [SerializeField] private List<Item> inventory;
     [SerializeField] private int inventoryCapacity = 20;
 
     [Header("Item Database")]
@@ -28,7 +28,7 @@ public class Inventory : MonoBehaviour
     private void SetInventorySettings()
     {
         inventory.Capacity = inventoryCapacity;
-        inventory = new List<ItemContainer>();
+        inventory = new List<Item>();
     }
 
     private void Start()
@@ -45,7 +45,7 @@ public class Inventory : MonoBehaviour
 
         // FALLBACK: int generatedItemAmount = UnityEngine.Random.Range(3, inventoryCapacity/2);
         for (int i = 0; i < testItemAmount; i++) {
-            ItemContainer generatedItem = new ItemContainer();
+            Item generatedItem = new Item();
             generatedItem.ItemData = itemDatabase.GenerateItem();
             generatedItem.Amount = UnityEngine.Random.Range(1, 10);
             Add_ItemToInventory(generatedItem);
@@ -54,7 +54,7 @@ public class Inventory : MonoBehaviour
         UICraftingSystem.Instance.Update_InventoryDisplay();
     }
 
-    public void Add_ItemToInventory(ItemContainer item) // currently addition doesn't care about max stack size
+    public void Add_ItemToInventory(Item item) // currently addition doesn't care about max stack size
     {
         if(inventory.Count <= inventory.Capacity) 
         {
@@ -70,16 +70,16 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    private bool Contains(ItemContainer item) // Comparing data inside items
+    private bool Contains(Item item) // Comparing data inside items
     {
-        foreach(ItemContainer container in inventory)
+        foreach(Item container in inventory)
         {
             if (container.ItemData == item.ItemData) return true;
         }
         return false;
     }
     
-    private int Contains_Index(ItemContainer item) // Returns index
+    private int Contains_Index(Item item) // Returns index
     {
         for (int i = 0; i < inventory.Count; i++)
         {
@@ -88,7 +88,7 @@ public class Inventory : MonoBehaviour
         return -1;
     }
 
-    public bool RemoveOnce_ItemFromInventory(ItemContainer item)
+    public bool RemoveOnce_ItemFromInventory(Item item)
     {
         int itemIndex = Contains_Index(item);
         if (inventory.Count > 0 && itemIndex > -1)
@@ -103,7 +103,7 @@ public class Inventory : MonoBehaviour
     }
 
 
-    public bool Remove_ItemFromInventory(ItemContainer item) // currently removes only 1
+    public bool Remove_ItemFromInventory(Item item) // currently removes only 1
     {
         int itemIndex = Contains_Index(item);
         if (inventory.Count > 0 && itemIndex > -1)
@@ -114,7 +114,7 @@ public class Inventory : MonoBehaviour
         return false;
     }
 
-    public List<ItemContainer> GetInventoryItems()
+    public List<Item> GetInventoryItems()
     {
         return inventory;
     }
