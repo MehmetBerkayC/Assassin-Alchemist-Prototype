@@ -4,7 +4,7 @@ using TMPro;
 public class UIPasswordPanel : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI passwordTextObject;
-    [SerializeField] GameObject passwordPanel;
+    [SerializeField] UnityEngine.GameObject passwordPanel;
 
     Door _currentDoor;
     string _currentPassword = "";

@@ -10,7 +10,7 @@ public class CameraBehaviour : MonoBehaviour
 
     void Start()
     {
-        playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+        playerTransform = UnityEngine.GameObject.FindGameObjectWithTag("Player").transform;
     }
 
 
