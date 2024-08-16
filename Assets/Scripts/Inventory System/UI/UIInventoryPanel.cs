@@ -61,6 +61,7 @@ public class UIInventoryPanel : MonoBehaviour
     {
         if (testing)
         {
+            inventorySlots[0].SetData(image, amount);
             itemDescription.SetDescription(image,title,description);
             inventorySlots[0].Select();
         }
@@ -82,9 +83,5 @@ public class UIInventoryPanel : MonoBehaviour
     {
         gameObject.SetActive(true);
         itemDescription.ResetDescription();
-
-        if (testing) {
-            inventorySlots[0].SetData(image, amount);
-        }
     }
 }
