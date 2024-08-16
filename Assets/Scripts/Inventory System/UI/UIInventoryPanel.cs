@@ -6,17 +6,32 @@ using UnityEngine;
 public class UIInventoryPanel : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private GameObject inventoryItemSlotPrefab;
+    [SerializeField] private UIInventoryItemSlot inventoryItemSlotPrefab;
+    
+    [SerializeField] private UIInventoryDescription itemDescription;
 
     [SerializeField] private RectTransform inventoryContentPanel;
 
     private List<UIInventoryItemSlot> inventorySlots = new();
 
+    // Test
+    [Header("Testing")]
+    [SerializeField] bool testing = false;
+
+    public Sprite image;
+    public int amount;
+    public string title, description;
+    // ---
+    private void Awake()
+    {
+        Hide();
+    }
+
     public void InitializeInventoryUI(int inventorySize)
     {
         for (int i = 0; i < inventorySize; i++)
         {
-            UIInventoryItemSlot itemSlot = Instantiate(inventoryItemSlotPrefab, inventoryContentPanel).GetComponent<UIInventoryItemSlot>();
+            UIInventoryItemSlot itemSlot = Instantiate(inventoryItemSlotPrefab, Vector3.zero, Quaternion.identity, parent: inventoryContentPanel);
             inventorySlots.Add(itemSlot);
             itemSlot.OnItemClicked += HandleItemSelection;
             itemSlot.OnItemBeginDrag += HandleBeginDrag;
@@ -44,11 +59,32 @@ public class UIInventoryPanel : MonoBehaviour
 
     private void HandleItemSelection(UIInventoryItemSlot slot)
     {
+        if (testing)
+        {
+            itemDescription.SetDescription(image,title,description);
+            inventorySlots[0].Select();
+        }
+
         Debug.Log(slot.name);
     }
 
     public void ToggleVisibility()
     {
         gameObject.SetActive(!gameObject.activeInHierarchy);
+    }
+
+    public void Hide()
+    {
+        gameObject.SetActive(false);
+    }
+
+    public void Show()
+    {
+        gameObject.SetActive(true);
+        itemDescription.ResetDescription();
+
+        if (testing) {
+            inventorySlots[0].SetData(image, amount);
+        }
     }
 }

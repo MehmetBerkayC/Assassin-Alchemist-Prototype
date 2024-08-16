@@ -1081,6 +1081,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5776768355573387155}
   - component: {fileID: 7728190722122859926}
+  - component: {fileID: 4112648769756377640}
   m_Layer: 5
   m_Name: Inventory Description
   m_TagString: Untagged
@@ -1135,6 +1136,21 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &4112648769756377640
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3973716766682608019}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2e46cdd4edac9d4bb52d67cae530031, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemSprite: {fileID: 7055064832731872073}
+  title: {fileID: 9084982916157044116}
+  description: {fileID: 877514996899861113}
 --- !u!1 &4711418444300713825
 GameObject:
   m_ObjectHideFlags: 0
@@ -1786,8 +1802,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 383af29b98c4a904083ae862974e40eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventoryItemSlotPrefab: {fileID: 7719147985843961636, guid: 3db526dbef5026445b99b8f244381888, type: 3}
+  inventoryItemSlotPrefab: {fileID: 5097189648984098581, guid: 3db526dbef5026445b99b8f244381888, type: 3}
+  itemDescription: {fileID: 4112648769756377640}
   inventoryContentPanel: {fileID: 3167323553147933631}
+  testing: 0
+  image: {fileID: 0}
+  amount: 0
+  title: 
+  description: 
 --- !u!1001 &1928528726929883923
 PrefabInstance:
   m_ObjectHideFlags: 0

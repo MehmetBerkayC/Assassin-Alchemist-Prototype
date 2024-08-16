@@ -20,23 +20,24 @@ public class UIInventoryItemSlot : MonoBehaviour
         Deselect();
     }
 
-    private void ResetData()
+    public void ResetData()
     {
         itemSprite.gameObject.SetActive(false);
         _empty = true;
     }
 
-    public void Deselect()
-    {
-        itemBorderImage.enabled = false;
-    }
-
     public void SetData(Sprite sprite, int amount)
     {
+        Debug.Log($"Received: {sprite} {amount}");
         itemSprite.gameObject.SetActive(true);
         itemSprite.sprite = sprite;
         itemAmountText.text = amount.ToString();
         _empty = false;
+    }
+
+    public void Deselect()
+    {
+        itemBorderImage.enabled = false;
     }
 
     public void Select()
