@@ -12,19 +12,24 @@ public class UIInventoryPanel : MonoBehaviour
 
     [SerializeField] private RectTransform inventoryContentPanel;
 
+    [SerializeField] private DraggableItem draggableItem;
+
     private List<UIInventoryItemSlot> inventorySlots = new();
+    private int currentlyDraggedItemIndex = -1;
 
     // Test
     [Header("Testing")]
     [SerializeField] bool testing = false;
 
-    public Sprite image;
+    public Sprite image, image2;
     public int amount;
     public string title, description;
     // ---
     private void Awake()
     {
         Hide();
+        itemDescription.ResetDescription();
+        draggableItem.ToggleActive(false);
     }
 
     public void InitializeInventoryUI(int inventorySize)
@@ -51,17 +56,34 @@ public class UIInventoryPanel : MonoBehaviour
 
     private void HandleDrop(UIInventoryItemSlot slot)
     {
+        int slotIndex = inventorySlots.IndexOf(slot);
+        if (slotIndex == -1) // empty space
+        {
+            draggableItem.ToggleActive(false);
+            currentlyDraggedItemIndex = -1;
+            return;
+        }
+
+        inventorySlots[currentlyDraggedItemIndex].SetData(slotIndex == 0 ? image : image2, amount);
+        inventorySlots[slotIndex].SetData(currentlyDraggedItemIndex == 0 ? image : image2, amount);
+        draggableItem.ToggleActive(false);
+        currentlyDraggedItemIndex = -1;
     }
 
     private void HandleBeginDrag(UIInventoryItemSlot slot)
     {
+        int slotIndex = inventorySlots.IndexOf(slot);
+        if (slotIndex == -1) return;
+        currentlyDraggedItemIndex = slotIndex;
+
+        draggableItem.ToggleActive(true);
+        if(testing) draggableItem.SetData(slotIndex == 0 ? image: image2, amount);
     }
 
     private void HandleItemSelection(UIInventoryItemSlot slot)
     {
         if (testing)
         {
-            inventorySlots[0].SetData(image, amount);
             itemDescription.SetDescription(image,title,description);
             inventorySlots[0].Select();
         }
@@ -71,7 +93,15 @@ public class UIInventoryPanel : MonoBehaviour
 
     public void ToggleVisibility()
     {
-        gameObject.SetActive(!gameObject.activeInHierarchy);
+        if (gameObject.activeInHierarchy) {
+            Hide();
+        }
+        else
+        {
+            Show();
+        }
+
+        //gameObject.SetActive(!gameObject.activeInHierarchy);
     }
 
     public void Hide()
@@ -83,5 +113,11 @@ public class UIInventoryPanel : MonoBehaviour
     {
         gameObject.SetActive(true);
         itemDescription.ResetDescription();
+
+        if (testing)
+        {
+            inventorySlots[0].SetData(image, amount);
+            inventorySlots[1].SetData(image2, amount);
+        }
     }
 }

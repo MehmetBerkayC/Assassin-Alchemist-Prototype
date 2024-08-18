@@ -4,7 +4,7 @@ using TMPro;
 using System;
 using UnityEngine.EventSystems;
 
-public class UIInventoryItemSlot : MonoBehaviour
+public class UIInventoryItemSlot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler
 {
     [SerializeField] private Image itemBorderImage;
     [SerializeField] private Image itemSprite;
@@ -45,28 +45,27 @@ public class UIInventoryItemSlot : MonoBehaviour
         itemBorderImage.enabled = true;
     }
 
-    public void OnBeginDrag()
+    public void OnDrop(PointerEventData eventData)
+    {
+        OnItemDrop?.Invoke(this);
+    }
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        OnItemEndDrag?.Invoke(this);
+    }
+
+    public void OnBeginDrag(PointerEventData eventData)
     {
         if (_empty) return;
         OnItemBeginDrag?.Invoke(this);
     }
 
-    public void OnDrop()
-    {
-        OnItemDrop?.Invoke(this);
-    }
-    
-    public void OnEndDrag() {
-        OnItemEndDrag?.Invoke(this);
-    }
-
-    public void OnPointerClick(BaseEventData eventData)
+    public void OnPointerClick(PointerEventData eventData)
     {
         //if (_empty) return;
 
-        var pointerEventData = eventData as PointerEventData;
-
-        if (pointerEventData.button == PointerEventData.InputButton.Right)
+        if (eventData.button == PointerEventData.InputButton.Right)
         {
             OnItemRightClicked?.Invoke(this);
         }
@@ -74,5 +73,10 @@ public class UIInventoryItemSlot : MonoBehaviour
         {
             OnItemClicked?.Invoke(this);
         }
+    }
+
+    public void OnDrag(PointerEventData eventData) // Begin and End Drag depends on this
+    {
+        // Won't use for now
     }
 }
