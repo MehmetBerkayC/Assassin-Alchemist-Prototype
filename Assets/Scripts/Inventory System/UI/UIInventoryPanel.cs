@@ -17,14 +17,9 @@ public class UIInventoryPanel : MonoBehaviour
     private List<UIInventoryItemSlot> inventorySlots = new();
     private int currentlyDraggedItemIndex = -1;
 
-    // Test
-    [Header("Testing")]
-    [SerializeField] bool testing = false;
+    public event Action<int> OnDescriptionRequested, OnItemActionRequested, OnStartDragging;
+    public event Action<int, int> OnSwapItems;
 
-    public Sprite image, image2;
-    public int amount;
-    public string title, description;
-    // ---
     private void Awake()
     {
         Hide();
@@ -46,49 +41,60 @@ public class UIInventoryPanel : MonoBehaviour
         }
     }
 
+    public void UpdateData(int itemSlotIndex, Sprite itemImage, int itemAmount)
+    {
+        if(inventorySlots.Count > itemSlotIndex)
+        {
+            inventorySlots[itemSlotIndex].SetData(itemImage, itemAmount);
+        }
+    }
+
     private void HandleShowItemActions(UIInventoryItemSlot slot)
     {
     }
-
-    private void HandleEndDrag(UIInventoryItemSlot slot)
-    {
-    }
-
-    private void HandleDrop(UIInventoryItemSlot slot)
-    {
-        int slotIndex = inventorySlots.IndexOf(slot);
-        if (slotIndex == -1) // empty space
-        {
-            draggableItem.ToggleActive(false);
-            currentlyDraggedItemIndex = -1;
-            return;
-        }
-
-        inventorySlots[currentlyDraggedItemIndex].SetData(slotIndex == 0 ? image : image2, amount);
-        inventorySlots[slotIndex].SetData(currentlyDraggedItemIndex == 0 ? image : image2, amount);
-        draggableItem.ToggleActive(false);
-        currentlyDraggedItemIndex = -1;
-    }
-
+    
     private void HandleBeginDrag(UIInventoryItemSlot slot)
     {
         int slotIndex = inventorySlots.IndexOf(slot);
         if (slotIndex == -1) return;
         currentlyDraggedItemIndex = slotIndex;
 
+        HandleItemSelection(slot);
+        OnStartDragging?.Invoke(slotIndex);
+    }
+
+    private void HandleEndDrag(UIInventoryItemSlot slot)
+    {
+        ResetDraggableItem();
+    }
+
+    private void HandleDrop(UIInventoryItemSlot slot)
+    {
+        int slotIndex = inventorySlots.IndexOf(slot);
+        if (slotIndex == -1) return;
+
+        OnSwapItems?.Invoke(currentlyDraggedItemIndex, slotIndex);
+    }
+
+    public void SetUpDraggedItem(Sprite sprite, int amount)
+    {
         draggableItem.ToggleActive(true);
-        if(testing) draggableItem.SetData(slotIndex == 0 ? image: image2, amount);
+        draggableItem.SetData(sprite, amount);
+    }
+
+    private void ResetDraggableItem()
+    {
+        draggableItem.ToggleActive(false);
+        currentlyDraggedItemIndex = -1;
     }
 
     private void HandleItemSelection(UIInventoryItemSlot slot)
     {
-        if (testing)
-        {
-            itemDescription.SetDescription(image,title,description);
-            inventorySlots[0].Select();
-        }
+        int slotIndex = inventorySlots.IndexOf(slot);
 
-        Debug.Log(slot.name);
+        if (slotIndex == -1) return;
+
+        OnDescriptionRequested?.Invoke(slotIndex);
     }
 
     public void ToggleVisibility()
@@ -107,6 +113,7 @@ public class UIInventoryPanel : MonoBehaviour
     public void Hide()
     {
         gameObject.SetActive(false);
+        ResetDraggableItem();
     }
 
     public void Show()
@@ -114,10 +121,27 @@ public class UIInventoryPanel : MonoBehaviour
         gameObject.SetActive(true);
         itemDescription.ResetDescription();
 
-        if (testing)
+        ResetSelection();
+    }
+
+    public void ResetSelection()
+    {
+        itemDescription.ResetDescription();
+        DeselectAllItems();
+    }
+
+    private void DeselectAllItems()
+    {
+        foreach (UIInventoryItemSlot item in inventorySlots)
         {
-            inventorySlots[0].SetData(image, amount);
-            inventorySlots[1].SetData(image2, amount);
+            item.Deselect();
         }
+    }
+
+    public void UpdateDescription(int itemIndex, Sprite ýtemSprite, string name, string description)
+    {
+        itemDescription.SetDescription(ýtemSprite, name, description);
+        DeselectAllItems();
+        inventorySlots[itemIndex].Select();
     }
 }

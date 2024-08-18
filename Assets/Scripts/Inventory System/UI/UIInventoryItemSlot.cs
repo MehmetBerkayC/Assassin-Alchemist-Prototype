@@ -63,8 +63,6 @@ public class UIInventoryItemSlot : MonoBehaviour, IPointerClickHandler, IBeginDr
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        //if (_empty) return;
-
         if (eventData.button == PointerEventData.InputButton.Right)
         {
             OnItemRightClicked?.Invoke(this);
