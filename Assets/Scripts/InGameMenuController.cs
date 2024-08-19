@@ -1,3 +1,4 @@
+using Inventory.UI;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,7 +10,6 @@ public class InGameMenuController : MonoBehaviour
     [Header("References")]
     [SerializeField] private GameObject menuBackground; // not a raycast target
     [SerializeField] private UIInventoryPanel InventoryPage;
-
 
     private void Awake()
     {
