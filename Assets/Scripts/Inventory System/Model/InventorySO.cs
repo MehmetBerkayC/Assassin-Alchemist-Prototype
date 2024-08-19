@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Inventory.Model
@@ -26,20 +27,80 @@ namespace Inventory.Model
             }
         }
 
-        public void AddItem(ItemSO item, int amount)
+        public int AddItem(ItemSO item, int amount)
         {
+            if (!item.IsStackable)
+            {
+                for (int i = 0; i < inventoryItems.Count; i++)
+                {
+                    while (amount > 0 && IsInventoryFull())
+                    {
+                        amount -= AddItemToFirstEmptySlot(item, 1);
+                    }
+                    InformAboutChange();
+                    return amount;
+                }
+            }
+            amount = AddStackableItem(item, amount);
+            InformAboutChange();
+            return amount;
+        }
+
+        private int AddItemToFirstEmptySlot(ItemSO item, int amount)
+        {
+            InventoryItem newItem = new InventoryItem
+            {
+                Item = item,
+                Amount = amount
+            };
+
             for (int i = 0; i < inventoryItems.Count; i++)
             {
                 if (inventoryItems[i].IsEmpty)
                 {
-                    inventoryItems[i] = new InventoryItem
-                    {
-                        Item = item,
-                        Amount = amount
-                    };
-                    return;
+                    inventoryItems[i] = newItem;
+                    return amount;
                 }
             }
+            return 0;
+        }
+
+        private bool IsInventoryFull() => inventoryItems.Where(item => item.IsEmpty).Any() == false;
+
+        private int AddStackableItem(ItemSO item, int amount)
+        {
+            for (int i = 0; i < inventoryItems.Count; i++)
+            {
+                if (inventoryItems[i].IsEmpty) continue;
+
+                if (inventoryItems[i].Item.ID == item.ID)
+                {
+                    int amountPossibleToTake = inventoryItems[i].Item.MaxStackSize - inventoryItems[i].Amount;
+
+                    if (amount > amountPossibleToTake) // Item amount over stack limit
+                    {
+                        inventoryItems[i] = inventoryItems[i].ChangeAmount(inventoryItems[i].Item.MaxStackSize);
+                        amount -= amountPossibleToTake;
+                    }
+                    else // Item has enough space in stack
+                    {
+                        inventoryItems[i] = inventoryItems[i].ChangeAmount(inventoryItems[i].Item.MaxStackSize);
+                        InformAboutChange();
+                        return 0;
+                    }
+                }
+            }
+
+            // Add leftover items
+            while (amount > 0 && !IsInventoryFull())
+            {
+                int newAmount = Mathf.Clamp(amount, 0, item.MaxStackSize);
+                amount -= newAmount;
+                AddItemToFirstEmptySlot(item, newAmount);
+            }
+
+            // return any leftover item
+            return amount;
         }
 
         public void AddItem(InventoryItem item)
@@ -89,12 +150,12 @@ namespace Inventory.Model
         public ItemSO Item;
         public bool IsEmpty => Item == null;
 
-        public InventoryItem ChangeAmount()
+        public InventoryItem ChangeAmount(int amount)
         {
             return new InventoryItem
             {
                 Item = this.Item,
-                Amount = 0
+                Amount = amount
             };
         }
 

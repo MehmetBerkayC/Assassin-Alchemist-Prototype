@@ -9,19 +9,22 @@ namespace Inventory.Model
     {
         public int ID => GetInstanceID();
 
-        [field: SerializeField] // if > 1 item becomes stacklable
-        public int MaxStackSize { get; set; } = 1;
+        [field: SerializeField] // Shouldn't need it but just in case
+        public bool IsStackable { get; private set; }
 
+        [field: SerializeField] // if > 1 item becomes stacklable
+        public int MaxStackSize { get; private set; } = 1;
+        
         // if you populate descriptions and names from JSON files:
         // you can remove TextArea from Description, add the Name property back
     
         //[field: SerializeField]
-        //public string Name { get; set; }
+        //public string Name { get; private set; }
 
         [field: SerializeField, TextArea] 
-        public string Description { get; set; }
+        public string Description { get; private set; }
 
         [field: SerializeField]
-        public Sprite ItemSprite {  get; set; }
+        public Sprite ItemSprite {  get; private set; }
     }
 }

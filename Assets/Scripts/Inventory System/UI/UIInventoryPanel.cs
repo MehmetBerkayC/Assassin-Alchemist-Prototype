@@ -76,10 +76,12 @@ namespace Inventory.UI
 
         private void HandleDrop(UIItemSlot slot)
         {
+            // item swapping -> empty slots also get swapped (same logic)
             int slotIndex = inventorySlots.IndexOf(slot);
             if (slotIndex == -1) return;
 
             OnSwapItems?.Invoke(currentlyDraggedItemIndex, slotIndex);
+            HandleItemSelection(slot);
         }
 
         public void SetUpDraggableItem(Sprite sprite, int amount)
