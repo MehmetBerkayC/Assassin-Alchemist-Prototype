@@ -126,7 +126,7 @@ namespace Inventory.Model
             return inventoryItems[itemIndex];
         }
 
-        internal void SwapItems(int itemIndex_1, int itemIndex_2)
+        public void SwapItems(int itemIndex_1, int itemIndex_2)
         {
             InventoryItem item1 = inventoryItems[itemIndex_1];
             inventoryItems[itemIndex_1] = inventoryItems[itemIndex_2];
@@ -137,6 +137,26 @@ namespace Inventory.Model
         private void InformAboutChange()
         {
             OnInventoryChanged?.Invoke(GetCurrentInventoryState());
+        }
+
+        public void RemoveItem(int itemIndex, int amount)
+        {
+            if (inventoryItems.Count > itemIndex)
+            {
+                if (inventoryItems[itemIndex].IsEmpty) return;
+
+                int remainder = inventoryItems[itemIndex].Amount - amount;
+                if (remainder <= 0) 
+                {
+                    inventoryItems[itemIndex] = InventoryItem.GetEmptyItem();
+                }
+                else
+                {
+                    inventoryItems[itemIndex] = inventoryItems[itemIndex].ChangeAmount(remainder);
+                }
+
+                InformAboutChange();
+            }
         }
     }
 
