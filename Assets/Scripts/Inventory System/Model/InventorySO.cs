@@ -33,7 +33,7 @@ namespace Inventory.Model
             {
                 for (int i = 0; i < inventoryItems.Count; i++)
                 {
-                    while (amount > 0 && IsInventoryFull())
+                    while (amount > 0 && !IsInventoryFull())
                     {
                         amount -= AddItemToFirstEmptySlot(item, 1);
                     }

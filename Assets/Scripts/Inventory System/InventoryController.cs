@@ -21,7 +21,7 @@ namespace Inventory
         [Header("Settings")]
         [SerializeField] private KeyCode inventoryToggleKey = KeyCode.I;
 
-        public int InventorySize = 10;
+        //public int InventorySize = 10;
 
         private void Start()
         {
@@ -37,6 +37,7 @@ namespace Inventory
             {
                 if (item.IsEmpty) continue;
                 inventoryData.AddItem(item);
+                //Debug.Log($"{item.Item.name}");
             }            
         }
 

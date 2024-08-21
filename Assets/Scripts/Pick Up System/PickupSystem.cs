@@ -45,7 +45,7 @@ public class PickupSystem : MonoBehaviour
                 IPickupable pickupableObject;
                 if(col.gameObject.TryGetComponent(out pickupableObject))
                 {
-                    Debug.Log($"Pickupable object detected: {pickupableObject}");
+                    //Debug.Log($"Pickupable object detected: {pickupableObject}");
                     PickupItem(pickupableObject);
                 }
             }
@@ -57,9 +57,9 @@ public class PickupSystem : MonoBehaviour
         Item itemToPickup = pickupableObject.Pickup();
         if (itemToPickup != null)
         {
-            Debug.Log($"Got item {itemToPickup}");  
+            //Debug.Log($"Got item {itemToPickup}");  
             int remainder = inventoryData.AddItem(itemToPickup.InventoryItem, itemToPickup.Amount);
-            Debug.Log($"Amount left {remainder}");
+            //Debug.Log($"Amount left {remainder}");
             if (remainder == 0)
             {
                 itemToPickup.DestroyItem();
