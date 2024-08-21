@@ -40,6 +40,8 @@ namespace Inventory
             }            
         }
 
+        public InventorySO GetInventoryData() => inventoryData;
+
         private void UpdateInventoryUI(Dictionary<int, InventoryItem> inventoryState)
         {
             inventoryPanel.ResetAllItems();

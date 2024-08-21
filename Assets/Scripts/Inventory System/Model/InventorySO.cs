@@ -84,7 +84,7 @@ namespace Inventory.Model
                     }
                     else // Item has enough space in stack
                     {
-                        inventoryItems[i] = inventoryItems[i].ChangeAmount(inventoryItems[i].Item.MaxStackSize);
+                        inventoryItems[i] = inventoryItems[i].ChangeAmount(inventoryItems[i].Amount + amount);
                         InformAboutChange();
                         return 0;
                     }
