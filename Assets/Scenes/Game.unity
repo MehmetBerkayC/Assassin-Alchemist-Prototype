@@ -5427,6 +5427,7 @@ GameObject:
   - component: {fileID: 1408853790}
   - component: {fileID: 1408853791}
   - component: {fileID: 1408853792}
+  - component: {fileID: 1408853793}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -5598,14 +5599,9 @@ MonoBehaviour:
   inventoryPanel: {fileID: 130867096}
   inventoryData: {fileID: 11400000, guid: 3d93456478288a8429dbdae702c969c3, type: 2}
   initialInventoryItems:
-  - Amount: 4
-    Item: {fileID: 11400000, guid: 6026a480c07297946b006bf510a0e3ac, type: 2}
-  - Amount: 1
-    Item: {fileID: 11400000, guid: 4c578eafa3249a144a91ce47ed84fbdf, type: 2}
-  - Amount: 0
-    Item: {fileID: 0}
+  - Amount: 2
+    Item: {fileID: 11400000, guid: d243c6396526ee24ebcd3aa59939666c, type: 2}
   inventoryToggleKey: 105
-  InventorySize: 3
 --- !u!114 &1408853792
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5624,6 +5620,18 @@ MonoBehaviour:
   pickupableMask:
     serializedVersion: 2
     m_Bits: 128
+--- !u!114 &1408853793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1408853785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 338dbe96a7d310544b997487be7c45a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1478387278
 GameObject:
   m_ObjectHideFlags: 0

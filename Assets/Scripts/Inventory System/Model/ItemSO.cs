@@ -4,8 +4,7 @@ using UnityEngine;
 
 namespace Inventory.Model
 {
-    [CreateAssetMenu(menuName = "Inventory System/Item", fileName ="New ItemSO")]
-    public class ItemSO : ScriptableObject
+    public abstract class ItemSO : ScriptableObject
     {
         public int ID => GetInstanceID();
 

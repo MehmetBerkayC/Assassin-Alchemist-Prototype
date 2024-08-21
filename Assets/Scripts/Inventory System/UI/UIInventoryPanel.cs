@@ -57,6 +57,9 @@ namespace Inventory.UI
 
         private void HandleShowItemActions(UIItemSlot slot)
         {
+            int slotIndex = inventorySlots.IndexOf(slot);
+            if (slotIndex == -1) return;
+            OnItemActionRequested?.Invoke(slotIndex);
         }
     
         private void HandleBeginDrag(UIItemSlot slot)
