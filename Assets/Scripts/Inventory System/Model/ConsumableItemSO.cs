@@ -14,7 +14,7 @@ namespace Inventory.Model
 
         public AudioClip ActionSFX { get; private set; }
 
-        public bool PerformAction(GameObject character)
+        public bool PerformAction(GameObject character, List<ItemParameter> itemState = null)
         {
             foreach (ModifierData data in modifiers)
             {
@@ -33,7 +33,7 @@ namespace Inventory.Model
     {
         public string ActionName { get; }
         public AudioClip ActionSFX { get; }
-        bool PerformAction(GameObject character);
+        bool PerformAction(GameObject character, List<ItemParameter> itemState);
     }
 
     [Serializable]

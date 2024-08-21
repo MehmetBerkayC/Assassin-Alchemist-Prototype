@@ -1,18 +1,19 @@
+using Inventory.Model;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EquipableItemSO : MonoBehaviour
+namespace Inventory.Model
 {
-    // Start is called before the first frame update
-    void Start()
+    public class EquipableItemSO : ItemSO, IDestroyableItem, IItemAction
     {
-        
-    }
+        public string ActionName => "Equip";
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        public AudioClip ActionSFX { get; private set; }
+
+        public bool PerformAction(GameObject character, List<ItemParameter> itemState = null)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

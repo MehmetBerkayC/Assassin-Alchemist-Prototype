@@ -68,7 +68,7 @@ namespace Inventory
             IItemAction itemAction = inventoryItem.Item as IItemAction;
             if (itemAction != null)
             {
-                itemAction.PerformAction(gameObject);
+                itemAction.PerformAction(gameObject, null);
             }
             IDestroyableItem destroyableItem = inventoryItem.Item as IDestroyableItem;
             if (destroyableItem != null)

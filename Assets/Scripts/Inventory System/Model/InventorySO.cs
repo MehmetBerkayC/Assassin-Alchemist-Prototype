@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Inventory.Model
 {
-    [CreateAssetMenu(menuName = "Inventory System/Inventory", fileName ="new InventorySO")]
+    [CreateAssetMenu(menuName = "Inventory System/Inventory", fileName = "new InventorySO")]
     public class InventorySO : ScriptableObject
     {
         [SerializeField]
@@ -27,31 +27,29 @@ namespace Inventory.Model
             }
         }
 
-        public int AddItem(ItemSO item, int amount)
+        public int AddItem(ItemSO item, int amountToAdd, List<ItemParameter> itemState = null)
         {
             if (!item.IsStackable)
             {
-                for (int i = 0; i < inventoryItems.Count; i++)
+                while (amountToAdd > 0 && !IsInventoryFull())
                 {
-                    while (amount > 0 && !IsInventoryFull())
-                    {
-                        amount -= AddItemToFirstEmptySlot(item, 1);
-                    }
-                    InformAboutChange();
-                    return amount;
+                    amountToAdd -= AddItemToFirstEmptySlot(item, 1, itemState);
                 }
+                InformAboutChange();
+                return amountToAdd;
             }
-            amount = AddStackableItem(item, amount);
+            amountToAdd = AddStackableItem(item, amountToAdd);
             InformAboutChange();
-            return amount;
+            return amountToAdd;
         }
 
-        private int AddItemToFirstEmptySlot(ItemSO item, int amount)
+        private int AddItemToFirstEmptySlot(ItemSO item, int amount, List<ItemParameter> itemState = null)
         {
             InventoryItem newItem = new InventoryItem
             {
                 Item = item,
-                Amount = amount
+                Amount = amount,
+                ItemState = new List<ItemParameter>(itemState == null ? item.DefaultParametersList: itemState)
             };
 
             for (int i = 0; i < inventoryItems.Count; i++)
@@ -65,6 +63,7 @@ namespace Inventory.Model
             return 0;
         }
 
+        // func -> return (Is any of the items(slots) are empty == false)
         private bool IsInventoryFull() => inventoryItems.Where(item => item.IsEmpty).Any() == false;
 
         private int AddStackableItem(ItemSO item, int amount)
@@ -108,10 +107,11 @@ namespace Inventory.Model
             AddItem(item.Item, item.Amount);
         }
 
-        public Dictionary<int , InventoryItem> GetCurrentInventoryState() {
+        public Dictionary<int, InventoryItem> GetCurrentInventoryState()
+        {
             // index - value list that is modifiable by any class,
             // this is to protect real inventory items from being accessed from any class
-            Dictionary<int, InventoryItem> returnValue = new Dictionary<int , InventoryItem>();
+            Dictionary<int, InventoryItem> returnValue = new Dictionary<int, InventoryItem>();
 
             for (int i = 0; i < inventoryItems.Count; i++)
             {
@@ -146,7 +146,7 @@ namespace Inventory.Model
                 if (inventoryItems[itemIndex].IsEmpty) return;
 
                 int remainder = inventoryItems[itemIndex].Amount - amount;
-                if (remainder <= 0) 
+                if (remainder <= 0)
                 {
                     inventoryItems[itemIndex] = InventoryItem.GetEmptyItem();
                 }
@@ -161,13 +161,15 @@ namespace Inventory.Model
     }
 
     [Serializable]
-    public struct InventoryItem 
+    public struct InventoryItem
     {
         // Why struct?: we don't want the items to be accessible and modifiable by any class, new items have to be made
         // so we use immutable type struct to protect items
         // -> struct is a value-type, while classes and interfaces are reference-type
         public int Amount;
+
         public ItemSO Item;
+        public List<ItemParameter> ItemState;
         public bool IsEmpty => Item == null;
 
         public InventoryItem ChangeAmount(int amount)
@@ -175,10 +177,15 @@ namespace Inventory.Model
             return new InventoryItem
             {
                 Item = this.Item,
-                Amount = amount
+                Amount = amount,
+                ItemState = new List<ItemParameter>(ItemState)
             };
         }
 
-        public static InventoryItem GetEmptyItem() => new InventoryItem { Item = null, Amount = 0};
+        public static InventoryItem GetEmptyItem() => new InventoryItem { 
+            Item = null, 
+            Amount = 0,
+            ItemState= new List<ItemParameter>()
+        };
     }
 }
