@@ -30,16 +30,4 @@ namespace Inventory.Model
         [field: SerializeField]
         public List<ItemParameter> DefaultParametersList { get; set; }
     }
-
-    [Serializable]
-    public struct ItemParameter : IEquatable<ItemParameter>
-    {
-        public ItemParameterSO Parameter;
-        public float Value;
-
-        public bool Equals(ItemParameter other)
-        {
-            return other.Parameter == Parameter;
-        }
-    }
 }
