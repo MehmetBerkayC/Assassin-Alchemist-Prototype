@@ -5729,7 +5729,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weapon: {fileID: 0}
-  inventoryData: {fileID: 0}
+  inventoryData: {fileID: 11400000, guid: 3d93456478288a8429dbdae702c969c3, type: 2}
   parametersToModify:
   - Parameter: {fileID: 11400000, guid: ea192fd81123a114c92bbcb200903c7d, type: 2}
     Value: -10
