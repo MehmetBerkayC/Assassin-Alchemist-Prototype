@@ -30,7 +30,7 @@ namespace Inventory.UI
 
         public void SetData(Sprite sprite, int amount)
         {
-            Debug.Log($"Received: {sprite} {amount}");
+            //Debug.Log($"Received: {sprite} {amount}");
             itemSprite.gameObject.SetActive(true);
             itemSprite.sprite = sprite;
             itemAmountText.text = amount.ToString();

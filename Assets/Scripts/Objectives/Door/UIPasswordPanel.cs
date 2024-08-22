@@ -1,70 +1,74 @@
 using UnityEngine;
 using TMPro;
+using Password.Model;
 
-public class UIPasswordPanel : MonoBehaviour
+namespace Password.UI
 {
-    [SerializeField] TextMeshProUGUI passwordTextObject;
-    [SerializeField] UnityEngine.GameObject passwordPanel;
-
-    Door _currentDoor;
-    string _currentPassword = "";
-    string _enteredPassword = "";
-
-    private void OnEnable()
+    public class UIPasswordPanel : MonoBehaviour
     {
-        UpdateDisplay();
-    }
+        [SerializeField] TextMeshProUGUI passwordTextObject;
+        [SerializeField] GameObject passwordPanel;
 
-    public void TogglePasswordPanel()
-    {
-        passwordPanel.SetActive(!passwordPanel.activeInHierarchy);
-    }
+        Door _currentDoor;
+        string _currentPassword = "";
+        string _enteredPassword = "";
 
-    public void SetPanelDoorAndPassword(Door door)
-    {
-        _currentDoor = door;
-        _currentPassword = door.GetDoorPassword();
-        // For now, don't have a pad - this will do
-        TogglePasswordPanel();
-    }
-
-    public void OnClick_Number(string number)
-    {
-        if (_enteredPassword.Length >= 4)
+        private void OnEnable()
         {
-            return;
+            UpdateDisplay();
         }
-        _enteredPassword = _enteredPassword + $"{number}";
-        UpdateDisplay();
-    }
 
-    public void OnClick_Delete() // Reset password display
-    {
-        ResetPassword();
-    }
+        public void TogglePasswordPanel()
+        {
+            passwordPanel.SetActive(!passwordPanel.activeInHierarchy);
+        }
 
-    public void OnClick_Enter() // Check password
-    {
-        if(_currentPassword != _enteredPassword)
+        public void SetPanelDoorAndPassword(Door door)
+        {
+            _currentDoor = door;
+            _currentPassword = door.GetDoorPassword();
+            // For now, don't have a pad - this will do
+            TogglePasswordPanel();
+        }
+
+        public void OnClick_Number(string number)
+        {
+            if (_enteredPassword.Length >= 4)
+            {
+                return;
+            }
+            _enteredPassword = _enteredPassword + $"{number}";
+            UpdateDisplay();
+        }
+
+        public void OnClick_Delete() // Reset password display
         {
             ResetPassword();
         }
-        else
+
+        public void OnClick_Enter() // Check password
         {
-            _currentDoor.OpenDoor();
-            // Close UI and play audio?
-            TogglePasswordPanel();
+            if(_currentPassword != _enteredPassword)
+            {
+                ResetPassword();
+            }
+            else
+            {
+                _currentDoor.OpenDoor();
+                // Close UI and play audio?
+                TogglePasswordPanel();
+            }
         }
-    }
 
-    private void ResetPassword()
-    {
-        _enteredPassword = "";
-        UpdateDisplay();
-    }
+        private void ResetPassword()
+        {
+            _enteredPassword = "";
+            UpdateDisplay();
+        }
 
-    public void UpdateDisplay()
-    {
-        passwordTextObject.text = _enteredPassword;
+        public void UpdateDisplay()
+        {
+            passwordTextObject.text = _enteredPassword;
+        }
     }
 }

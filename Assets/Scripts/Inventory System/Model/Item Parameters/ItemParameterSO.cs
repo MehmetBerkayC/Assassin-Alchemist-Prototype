@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Inventory.Model
 {
-    [CreateAssetMenu]
+    [CreateAssetMenu(menuName ="Inventory System/Item Parameters", fileName ="new ItemParameter")]
     public class ItemParameterSO : ScriptableObject
     {
         [field: SerializeField]

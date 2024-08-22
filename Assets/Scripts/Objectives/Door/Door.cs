@@ -1,38 +1,42 @@
+using Password.UI;
 using UnityEngine;
 
-public class Door : MonoBehaviour, IInteractable
+namespace Password.Model
 {
-    [SerializeField] UIPasswordPanel passwordPanel;
-    [SerializeField] Collider2D collider2d; // change for 3d collisions
-
-    public string Password { get; private set;}
-
-    private void Awake()
+    public class Door : MonoBehaviour, IInteractable
     {
-        TryGetComponent(out collider2d);
-    }
+        [SerializeField] UIPasswordPanel passwordPanel;
+        [SerializeField] Collider2D collider2d; // change for 3d collisions
 
-    private void Start()
-    {
-        Password password = new Password();
-        Password = password.GetPassword();
-        Debug.Log("Password is: " + Password);
-    }
+        public string Password { get; private set;}
 
-    public string GetDoorPassword() // For password Note
-    {
-        return Password;
-    }
+        private void Awake()
+        {
+            TryGetComponent(out collider2d);
+        }
 
-    // Implement a note and UI(payday2 security pad alike) that uses this
-    public void OpenDoor()
-    {
-        // Open
-        collider2d.enabled = !collider2d.isActiveAndEnabled;
-    }
+        private void Start()
+        {
+            Password password = new Password();
+            Password = password.GetPassword();
+            Debug.Log("Password is: " + Password);
+        }
 
-    public void Interact() // Separate the keypad and door logic
-    {
-        passwordPanel.SetPanelDoorAndPassword(this);
+        public string GetDoorPassword() // For password Note
+        {
+            return Password;
+        }
+
+        // Implement a note and UI(payday2 security pad alike) that uses this
+        public void OpenDoor()
+        {
+            // Open
+            collider2d.enabled = !collider2d.isActiveAndEnabled;
+        }
+
+        public void Interact() // Separate the keypad and door logic
+        {
+            passwordPanel.SetPanelDoorAndPassword(this);
+        }
     }
 }
