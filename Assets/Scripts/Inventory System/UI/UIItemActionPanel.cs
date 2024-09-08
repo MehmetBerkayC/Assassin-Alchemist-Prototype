@@ -18,9 +18,7 @@ namespace Inventory.UI
 
         public void Toggle(bool value)
         {
-            if(value) {
-                RemoveOldButtons();
-            }
+            if(value) RemoveOldButtons();
             gameObject.SetActive(value);
         }
 

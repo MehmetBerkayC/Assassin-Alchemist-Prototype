@@ -146,11 +146,11 @@ namespace Inventory.UI
 
         private void DeselectAllItems()
         {
+            actionPanel.Toggle(false);
             foreach (UIItemSlot item in inventorySlots)
             {
                 item.Deselect();
             }
-            actionPanel.Toggle(false);
         }
 
         public void ShowItemAction(int itemIndex)

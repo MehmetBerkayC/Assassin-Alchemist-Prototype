@@ -94,20 +94,22 @@ namespace Inventory
             InventoryItem inventoryItem = inventoryData.GetItemAt(itemIndex);
             if (inventoryItem.IsEmpty) return;
 
+            // Remove item from inventory
+            IDestroyableItem destroyableItem = inventoryItem.Item as IDestroyableItem;
+            if (destroyableItem != null)
+            {
+                inventoryData.RemoveItem(itemIndex, 1);
+            }
+
             // Operate action
             IItemAction itemAction = inventoryItem.Item as IItemAction;
             if (itemAction != null)
             {
                 // Take notice of which game object you're sending
                 itemAction.PerformAction(gameObject, inventoryItem.ItemState);
+                // Debug.Log("item action performed");
                 if (inventoryData.GetItemAt(itemIndex).IsEmpty) inventoryPanel.ResetSelection();
-            }
-            
-            // Remove item from inventory
-            IDestroyableItem destroyableItem = inventoryItem.Item as IDestroyableItem;
-            if (destroyableItem != null)
-            {
-                inventoryData.RemoveItem(itemIndex, 1);
+                // Debug.Log("empty item slot check after item action");
             }
         }
 
