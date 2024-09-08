@@ -16,6 +16,8 @@ namespace Inventory.UI
 
         [SerializeField] private UIDraggableItem draggableItem;
 
+        [SerializeField] private UIItemActionPanel actionPanel;
+
         private List<UIItemSlot> inventorySlots = new();
         private int currentlyDraggedItemIndex = -1;
 
@@ -123,6 +125,7 @@ namespace Inventory.UI
 
         public void Hide()
         {
+            actionPanel.Toggle(false);
             gameObject.SetActive(false);
             ResetDraggableItem();
         }
@@ -147,6 +150,18 @@ namespace Inventory.UI
             {
                 item.Deselect();
             }
+            actionPanel.Toggle(false);
+        }
+
+        public void ShowItemAction(int itemIndex)
+        {
+            actionPanel.Toggle(true);
+            actionPanel.transform.position = inventorySlots[itemIndex].transform.position;
+        }
+
+        public void AddAction(string actionName, Action performAction)
+        {
+            actionPanel.AddButton(actionName, performAction);
         }
 
         public void UpdateDescription(int itemIndex, Sprite ýtemSprite, string name, string description)

@@ -67,12 +67,32 @@ namespace Inventory
             InventoryItem inventoryItem = inventoryData.GetItemAt(itemIndex);
             if (inventoryItem.IsEmpty) return;
 
+            // Operate action
+            IItemAction itemAction = inventoryItem.Item as IItemAction;
+            if (itemAction != null)
+            {
+                inventoryPanel.ShowItemAction(itemIndex);
+                inventoryPanel.AddAction(itemAction.ActionName, () => PerformAction(itemIndex));
+            }
+           
             // Remove item from inventory
             IDestroyableItem destroyableItem = inventoryItem.Item as IDestroyableItem;
             if (destroyableItem != null)
             {
-                inventoryData.RemoveItem(itemIndex, 1);
+                inventoryPanel.AddAction("Drop", () => DropItem(itemIndex, inventoryItem.Amount));
             }
+        }
+
+        private void DropItem(int itemIndex, int amount)
+        {
+            inventoryData.RemoveItem(itemIndex, amount);
+            inventoryPanel.ResetSelection();
+        }
+
+        public void PerformAction(int itemIndex)
+        {
+            InventoryItem inventoryItem = inventoryData.GetItemAt(itemIndex);
+            if (inventoryItem.IsEmpty) return;
 
             // Operate action
             IItemAction itemAction = inventoryItem.Item as IItemAction;
@@ -80,6 +100,14 @@ namespace Inventory
             {
                 // Take notice of which game object you're sending
                 itemAction.PerformAction(gameObject, inventoryItem.ItemState);
+                if (inventoryData.GetItemAt(itemIndex).IsEmpty) inventoryPanel.ResetSelection();
+            }
+            
+            // Remove item from inventory
+            IDestroyableItem destroyableItem = inventoryItem.Item as IDestroyableItem;
+            if (destroyableItem != null)
+            {
+                inventoryData.RemoveItem(itemIndex, 1);
             }
         }
 
